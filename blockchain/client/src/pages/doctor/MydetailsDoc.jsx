@@ -1,17 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 
 
 const MyDetailsDoc = ({ state }) => {
-   
-    
-   
-   
     
     const [account, setTransaction] = useState([]);
 

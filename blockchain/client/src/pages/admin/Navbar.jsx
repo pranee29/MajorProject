@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 
-function Nav({state}) {
+
+
+function Navbar({state}) {
 
   const [account, setTransaction] = useState([]);
 
@@ -22,27 +24,24 @@ function Nav({state}) {
   
   return (
     <>
-     
-    <div className="bg-slate-700 w-46 fixed left-0 top-0 h-screen p-10">
-      <nav >
+
+     <div className="bg-slate-700 w-46 fixed left-0 top-0 h-screen p-10 ">
+      
+      <nav>
         <hr />
         <Link to={"/"} className="text-white" >Home</Link><br></br>
         <hr />
         
-        {/* <Link to={"/doctor"} className="text-white" >Doctor</Link><br></br>
-        <hr /> */}
-        <Link to={`/doctor/${account[0]}`} className="text-white">
-            My Details
+        <Link to={"/hospital"} className="text-white"> Hospital </Link><br></br>
+        <hr />
+
+        <Link to={"/hospital/adddoc"} className="text-white" >
+            Add Doctor Details
         </Link><br></br>
         <hr />
-        <Link to={"/doctor/addpatient"} className="text-white" >
-            Set Patient Details
+        <Link to={"/hospital/searchdoc"} className="text-white" >
+            Search Doctor
         </Link><br></br>
-        <hr />
-        <Link to={"/doctor/searchpatient"} className="text-white">
-            Search Patient
-        </Link><br></br>
-        <hr />
 
       </nav>
     </div>
@@ -53,4 +52,4 @@ function Nav({state}) {
   );
 }
 
-export default Nav;
+export default Navbar;

@@ -1,15 +1,20 @@
-import abi from "./contracts/chai.json";
+import abi from "./contracts/MedicalRecord.json";
 import { Route, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {ethers}  from "ethers";
 
 import DoctorLogin from "./pages/doctor/DoctorLogin";
-import MyDetailsDoc from "./pages/doctor/MydetailsDoc";
+import AddDoc from "./pages/admin/AddDoc";
+import SearchDoc from "./pages/admin/SearchDoc";
+
 import HospitalLogin from "./pages/admin/HospitalLogin";
 import Login from "./pages/Login";
-import UserLogin from "./pages/patient/UserLogin";
+import UserLogin from "./pages/user/UserLogin";
+import MyDetailsDoc from "./pages/doctor/MydetailsDoc";
 import PatientDetails from "./pages/doctor/PatientDetails";
 import SetPatientDetails from "./pages/doctor/SetPatientDetails"
+import MyDetails from "./pages/user/myDetails";
+import SearchDoctor from "./pages/user/searchDoctor";
 
 //const ethers = require("ethers");
 
@@ -23,7 +28,7 @@ function App() {
   const [account, setAccount] = useState("None");
   useEffect(() => {
     const connectWallet = async () => {
-      const contractAddress = "0x72DD5C83aF6cbAf13C3cf16e7779FCE11B2288b2";
+      const contractAddress = "0x3e4a3e6c3b446fD7a59c3dAdc2ba0db9a80Fec62";
       const contractABI = abi.abi;
       try {
         const { ethereum } = window;
@@ -66,13 +71,18 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Login/>}/>
-        <Route path="/user" element={<UserLogin state={state}/>}/>
-        <Route path="/hospital" element={<HospitalLogin state={state}/>}/>
+        <Route path="/user" element={<UserLogin state={state} account={account}/>}/>
 
-        <Route path="/doctor" element={<DoctorLogin state={state}/>}/>
-        <Route path="/doctor/:id" element={<MyDetailsDoc state={state}/>}/>
-        <Route path="/doctor/searchpatient" element={<PatientDetails state={state}/>}/>
-        <Route path="/doctor/addpatient" element={<SetPatientDetails state={state}/>}/>
+        <Route path="/hospital" element={<HospitalLogin state={state} account={account}/>}/>
+        <Route path="/hospital/adddoc" element={<AddDoc state={state} account={account}/>}/>
+        <Route path="hospital/searchdoc" element={<SearchDoc state={state} account={account}/> }/>
+
+        <Route path="/doctor" element={<DoctorLogin state={state} account={account}/>}/>
+        <Route path="/doctor/:id" element={<MyDetailsDoc state={state} account={account}/>}/>
+        <Route path="/doctor/searchpatient" element={<PatientDetails state={state} account={account}/>}/>
+        <Route path="/doctor/addpatient" element={<SetPatientDetails state={state} account={account}/>}/>
+        <Route path="/user/myDetails" element={<MyDetails state={state} account={account}/>}/>
+        <Route path="/user/searchDoctor" element={<SearchDoctor state={state} account={account}/>}/>
       
       
       </Routes>

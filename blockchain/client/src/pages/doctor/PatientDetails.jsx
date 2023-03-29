@@ -20,7 +20,7 @@ const PatientDetails = ({ state }) => {
         const { contract } = state;
         const address1 = document.querySelector("#address1").value;
         try{
-          console.log("Clicked");
+          //console.log("Clicked");
           const transaction =await contract.getPatientDetails(address1);
           console.log("Clicked");
           setTransaction(transaction);      
@@ -28,6 +28,7 @@ const PatientDetails = ({ state }) => {
         catch(error){
           alert(error);
         }
+        console.log(transaction);
     }
 
     const getPatientByName=async(event)=>{
@@ -37,13 +38,14 @@ const PatientDetails = ({ state }) => {
         const name = document.querySelector("#name").value;
         try{
           console.log("Clicked");
-          const data =await contract.getPatientDetails(name);
+          const data =await contract.getPatientbyName(name);
           console.log("Clicked");
-          setTransaction(data);      
+          setData(data);      
         }
         catch(error){
           alert(error);
         }
+        console.log(data);
     }
     
 
@@ -115,8 +117,8 @@ const PatientDetails = ({ state }) => {
   
                             </form>
                         </div>
-
-                        <div>
+                        {/* <div>{data}</div> */}
+                        {/* <div>
                             {data.map((ele) => {
                                 return (
                                     <div key={ele.id}>
@@ -129,7 +131,7 @@ const PatientDetails = ({ state }) => {
                                     </div>
                                 );
                             })}
-                        </div>
+                        </div> */}
 
 
 
