@@ -5,27 +5,57 @@ import { Link } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "../admin/Navbar";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const AddDoc = ({ state,account }) => {
     const [address,setAddress]=useState("");
     const [name,setName]=useState("");
     const [num,setNum]=useState("");
+    const [qual,setQual]=useState("");
+    const [hosp,setHosp]=useState("");
+    const [open, setOpen] = useState(false);
+    const [success,setSucc]=useState(false);
+
+    const [pos, setpos] = useState({
+        vertical: 'top',
+        horizontal: 'center',
+      });
+      const { vertical, horizontal } = pos;
+      const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setSucc(false);
+      };
+
 
     const setDoc = async (event) => {
-      
+        
         event.preventDefault();
+        setOpen(true);
         const { contract } = state;
         
         console.log("abcdef");
         try{  
-          const transaction = await contract.setDoctorDetails(true,address,num,name);
+            console.log(address +" add of doctor")
+          const transaction = await contract.setDoctorDetails(true,address,num,name,qual,hosp);
+          console.log(transaction);
           await transaction.wait();
-          alert("Done");
+          setOpen(false);
+          setSucc(true);
+          console.log(transaction);
         }
         catch(error){
-          alert(error);
+            alert(error);
+            setOpen(false);
         }
+        
         
     };
 
@@ -33,7 +63,7 @@ const AddDoc = ({ state,account }) => {
     
     return(
         <>
-            <div  style={ { textAlign:"center", backgroundColor: "azure"} }>
+            <div className="w-full h-screen" style={ { textAlign:"center", backgroundColor: "lightblue"} }>
                 <aside>
                     <Navbar/>
                 </aside>   
@@ -42,11 +72,12 @@ const AddDoc = ({ state,account }) => {
                     <h1>
                         Add Doctor Details
                     </h1>
-                    <div className="flex  justify-evenly" style={ { textAlign:"center" ,marginTop:"90px"} }>
-                        <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={setDoc} style={{backgroundColor: "lightblue", width:"30%"}}>
-                            <div className="mb-3">
+                    <div className="flex  justify-evenly" style={ {  marginTop:"90px"} }>
+                        <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={setDoc} style={{backgroundColor: "white", width:"30%"}}>
+                            <div className="mb-3" style={{textAlign:"left", marginTop:"10px"}}>
                                 <label className="form-label">Doctor address </label>
                                 <input
+                                    
                                     type="text"
                                     className="form-control placeholder:italic outline outline-offset-2 outline-1"
                                     id="address"
@@ -55,20 +86,22 @@ const AddDoc = ({ state,account }) => {
                                     value = {address}
                                 />
                             </div>
-                            <div className="mb-3">
-                                <label className="form-label">Doctor Name </label>
+                            <div className="mb-3" style={{textAlign:"left", marginTop:"10px"}}>
+                                <label className="form-label"> Name </label>
+                                
                                 <input
                                     type="text"
                                     className="form-control placeholder:italic outline outline-offset-2 outline-1"
                                     id="name"
-                                    placeholder="Enter Patient Name"
+                                    placeholder="Enter Doctor Name"
                                     onChange={(e)=>setName(e.target.value)}
                                     value = {name}
                                 />
                             </div>
-                            <div className="mb-3">
-                                <label className="form-label">Doctor phone number </label>
+                            <div className="mb-3" style={{textAlign:"left", marginTop:"10px"}}>
+                                <label className="form-label"> Phone number </label>
                                 <input
+                                    style={{textAlign:"start", marginTop:"10px"}}
                                     type="text"
                                     className="form-control placeholder:italic outline outline-offset-2 outline-1"
                                     id="num"
@@ -77,13 +110,28 @@ const AddDoc = ({ state,account }) => {
                                     value = {num}
                                 />
                             </div>
-                            <div className="mb-3">
-                                <label className="form-label">Doctor Qualification </label>
+                            <div className="mb-3" style={{textAlign:"left", marginTop:"10px"}}>
+                                <label className="form-label"> Qualification </label>
                                 <input
+                                    style={{textAlign:"start", marginTop:"10px"}}
                                     type="text"
                                     className="form-control placeholder:italic outline outline-offset-2 outline-1"
-                                    id="qualification"
-                                    placeholder="Enter Qualification"
+                                    id="qual"
+                                    placeholder="Enter Doctor Qualification"
+                                    onChange={(e)=>setQual(e.target.value)}
+                                    value = {qual}
+                                />
+                            </div>
+                            <div className="mb-3" style={{textAlign:"left", marginTop:"10px"}}>
+                                <label className="form-label"> Hospital Name  </label>
+                                <input
+                                    style={{textAlign:"start", marginTop:"10px"}}
+                                    type="text"
+                                    className="form-control placeholder:italic outline outline-offset-2 outline-1"
+                                    id="name"
+                                    placeholder="Enter Hospital Name"
+                                    onChange={(e)=>setHosp(e.target.value)}
+                                    value = {hosp}
                                 />
                             </div><br></br>
                             <button
@@ -93,6 +141,24 @@ const AddDoc = ({ state,account }) => {
                             >
                                 Add Doctor
                             </button> <br></br>
+                            <Snackbar
+                                anchorOrigin={{ vertical, horizontal }}
+                                key={vertical + horizontal}
+                                open={open}
+                                message="Processing"
+                            />
+                            <Snackbar 
+                                open={success} 
+                                autoHideDuration={6000} 
+                                onClose={handleClose} 
+                                anchorOrigin={{ vertical, horizontal }}
+                                key={vertical + horizontal}>
+                                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                                        Added Doctor Successfully
+                                    </Alert>
+                            </Snackbar>
+
+
                         </form>
                         <br></br>
                         <br></br>

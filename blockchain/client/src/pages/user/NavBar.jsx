@@ -25,21 +25,15 @@ function Nav({state}) {
      
     <div className="bg-slate-700 w-46 fixed left-0 top-0 h-screen p-10">
       <nav >
-        <hr />
-        <Link to={"/"} className="text-white" >Home</Link><br></br>
-        <hr />
+      <hr />
         
-        {/* <Link to={"/doctor"} className="text-white" >Doctor</Link><br></br>
-        <hr /> */}
-        {/* <Link to={`/patient/${account[0]}`} className="text-white"> */}
+        <Link to={"/"} className="text-white" >Home</Link><br></br>
+        
+        <hr />
         <Link to={`/user/myDetails`} className="text-white">
             My Details
         </Link><br></br>
         <hr />
-        {/* <Link to={"/doctor/addpatient"} className="text-white" >
-            Set Patient Details
-        </Link><br></br>
-        <hr /> */}
         <Link to={"/user/searchDoctor"} className="text-white">
             Search Doctor
         </Link><br></br>

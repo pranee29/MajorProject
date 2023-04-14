@@ -25,7 +25,7 @@ function Nav({state}) {
      
     <div className="bg-slate-700 w-46 fixed left-0 top-0 h-screen p-10">
       <nav >
-        <hr />
+      <hr />
         <Link to={"/"} className="text-white" >Home</Link><br></br>
         <hr />
         

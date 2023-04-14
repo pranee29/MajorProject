@@ -5,36 +5,62 @@ import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 
 
-const MyDetailsDoc = ({ state }) => {
+const MyDetailsDoc = ({ state,account }) => {
     
-    const [account, setTransaction] = useState([]);
-
-    const getDetails= async (event) =>{
-        const { ethereum } = window;
-        if (ethereum) {
-            const account = await ethereum.request({
-                method: "eth_requestAccounts",
-            });
-            setTransaction(account);
-            console.log(account[0]);
+    const [transaction, setTransaction] = useState([]);
+    const [details,setDetails] =useState([]);
+    const { contract } = state;
+    
+    useEffect(() => {
+      const memosMessage = async () => {
+        try{
+        const details = await contract.getDoctorDetailsForDoc(account[0]);
+        setDetails(details);
+        console.log(details);
         }
-    }
+        catch(error){
+          alert("You are not a doctor");
+        }
+      };
+      contract && memosMessage();
+    }, [contract]);
 
 
     return (
         <>
 
             
-            <div className="flex w-full h-screen" style={ { textAlign:"center", backgroundColor: "azure"} }>
+            <div className="flex w-full h-screen" style={ { textAlign:"center", backgroundColor: "lightblue"} }>
                 <aside>
                     <Navbar/>
                 </aside>   
-                <main className="flex-1 ml-44">
-                    <button type="submit" onClick={getDetails}>Details</button>
-                        <div>
-                        abcsdf {account[0]}
-                        </div>
-                </main>
+                
+                <main>
+       <p className="text-4xl">Hello..   {account}</p>
+        <div className="w-screen flex justify-evenly " style={ { textAlign:"center" ,marginTop:"90px"} }>
+        <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" style={{backgroundColor: "white"}} >
+            <div><b>Your Details...</b></div><br></br>
+            <hr></hr>
+            <div className="mb-3">
+              
+              <p style={{textAlign:"start", marginTop:"10px"}}><b>Name</b>           :  {details.at(2)}</p>
+              <p style={{textAlign:"start", marginTop:"10px"}}><b>id </b>           :  {account[0]}</p>
+              {/* <p style={{textAlign:"start", marginTop:"10px"}}><b>Phone Number</b>   :  {details[3].toNumber()}</p> */}
+              <p style={{textAlign:"start", marginTop:"10px"}}><b>Qualification</b>           :  {details[4]}</p>
+              <p style={{textAlign:"start", marginTop:"10px"}}><b>Hospital</b>           :  {details[5]}</p>
+              
+              
+            </div><br></br>
+              
+            
+            
+
+          </form>
+        
+        
+        
+        </div>
+        </main>
             </div>
 
 

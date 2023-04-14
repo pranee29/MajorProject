@@ -1,18 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 
-
+import Display from "./Display";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
+import Snackbar from '@mui/material/Snackbar';
 
-
-const PatientDetails = ({ state }) => {
+const PatientDetails = ({ state,account }) => {
    
     
     const [transaction, setTransaction] = useState([]);
-    
+    const [addresses , setAddresses] = useState([]);
+    const [phn , setPhn] = useState([]);
     const [data, setData]=useState([]);
+
+    const [open, setOpen] = useState(false);
+    const [opensb, setOpensb] = useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const getPatient= async (event) =>{
         event.preventDefault();
@@ -23,7 +32,8 @@ const PatientDetails = ({ state }) => {
           //console.log("Clicked");
           const transaction =await contract.getPatientDetails(address1);
           console.log("Clicked");
-          setTransaction(transaction);      
+          setTransaction(transaction); 
+          setOpen(true);     
         }
         catch(error){
           alert(error);
@@ -31,21 +41,43 @@ const PatientDetails = ({ state }) => {
         console.log(transaction);
     }
 
+    const getPatientView =async (addrv) =>{
+        // event.preventDefault();
+         const { contract } = state;
+         
+         console.log("Clicked get doc");
+         try{
+           const transaction =await contract.getPatientDetails(addrv);
+           setTransaction(transaction);
+           setOpen(true); 
+         }
+         catch(error){
+           alert(error);
+         }
+    }
+
     const getPatientByName=async(event)=>{
         event.preventDefault();
-        console.log("Clicked");
+        setOpensb(true);
         const { contract } = state;
         const name = document.querySelector("#name").value;
+        console.log("Clicked get doc");
         try{
-          console.log("Clicked");
-          const data =await contract.getPatientbyName(name);
-          console.log("Clicked");
-          setData(data);      
+            const data1 =await contract.getPatientbyName_mod(name);
+            await data1.wait();
+            const data=await contract.getPatientbyName();
+            console.log(data);
+            const addresses=data[0];
+            const phn=data[1];
+            setOpensb(false);
+            setAddresses(addresses);
+            setPhn(phn);
+            console.log(addresses+" "+phn);      
         }
         catch(error){
-          alert(error);
+            alert(error);
         }
-        console.log(data);
+        
     }
     
 
@@ -54,17 +86,19 @@ const PatientDetails = ({ state }) => {
         <>
 
             
-            <div  style={ { textAlign:"center", backgroundColor: "azure"} }>
+            <div className="w-full h-screen" style={ { textAlign:"center", backgroundColor: "lightblue"} }>
                 <aside>
                     <Navbar/>
                 </aside>   
                 <main className="flex-1 ml-44">
-                        <div>
+                        <div className="text-4xl">
                             Patient Details
                         </div>
                         <div className="flex  justify-evenly" style={ { textAlign:"center" ,marginTop:"70px"} }>
-                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatient} style={{backgroundColor: "lightblue", width:"30%"}} >
-                                <h1>Patient Details </h1><br></br>
+                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatient} style={{backgroundColor: "white", width:"30%"}} >
+                                <h1><b>Patient Details</b> </h1><br></br>
+                                <hr />
+                                <br />
                                 <div className="mb-3">
                                     <label className="form-label">Get Patient Details by address  </label>
                                     <input
@@ -81,23 +115,25 @@ const PatientDetails = ({ state }) => {
                                 >
                                     Get Patient Details
                                 </button>
-                                <div style={{ marginTop:"30px"}}>
-                                    <div>
-                                        <p style={{textAlign: "center"}}>Patient Detials</p>
-                                        <div style={{textAlign:"start", marginTop:"10px"}}>Patient Address :   </div>
-                                        <div style={{textAlign:"start"}}>Patient Name    :  </div>
-                                        <div style={{textAlign:"start"}}>Prescription    :  </div>
-                                    </div>
-                                </div>
+                                <Dialog onClose={handleClose} open={open} >
+                                    <DialogTitle>Patient Details</DialogTitle>
+                                        <div style={{ margin:"10px"}}>
+                                        <div style={{color:"black"}}>Address :  {transaction.at(1)} </div>
+                                        <div> Name:  {transaction.at(3)}</div>
+                                        {/* <div>Phone Number : {transaction.at(2).toNumber()}</div> */}
+                                        <div> Records : {transaction.at(4)}</div>
+                                        <div>Files :{transaction.at(5)}</div>
+                                        <div><Display state={state} account={transaction.at(1)}/></div>
+                                        </div>
+                                </Dialog>
+                               
                             </form>
-                        </div>
 
-                        <br></br>
-                        <br></br>
-
-                        <div className="flex justify-evenly">
-                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatientByName} style={{backgroundColor: "lightblue", width:"30%"}} >
-                                <h1>Patient Details </h1><br></br>
+                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatientByName} style={{backgroundColor: "white", width:"30%"}} >
+                                <h1><b>Patient Details</b> </h1><br></br>
+                                <hr></hr>
+                                
+                                <br />
                                 <div className="mb-3">
                                     <label className="form-label">Get Patient Details by Name </label>
                                     <input
@@ -114,24 +150,76 @@ const PatientDetails = ({ state }) => {
                                 >
                                     Get Details
                                 </button>
+                                <Snackbar
+                                open={opensb}
+                                message="Processing"
+                                />
   
                             </form>
+                            
+
                         </div>
-                        {/* <div>{data}</div> */}
-                        {/* <div>
-                            {data.map((ele) => {
-                                return (
-                                    <div key={ele.id}>
-                                        <p>{ele.id}</p>
-                                        <p>{ele.patientName}</p>
-                                        <p>{ele.patientRecord}</p>
-                                        <p>{ele.state}</p>
-                                        <Link to={`/docotr/${ele.id}`}>Update</Link>
-                                        <hr />
-                                    </div>
+
+                        <br></br>
+                        <br></br>
+
+                        
+
+                        {
+                            addresses.map((ele)=>{
+                                return(
+                                <div style={{ marginLeft:"50px" , width:"100%"}}>
+                                    <table>
+                                    <tbody>
+                                        <tr>
+                                        <td
+                                            
+                                            style={{
+                                            backgroundColor: "#96D4D4",
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                            padding: "7px",
+                                            width: "400px",           
+                                            }}
+                                            >
+                                            {ele}
+                                            </td>
+                                            <td
+                                            style={{
+                                                backgroundColor: "#96D4D4",
+                                                border: "1px solid white",
+                                                borderCollapse: "collapse",
+                                                padding: "7px",
+                                                width: "200px",
+                                            }}
+                                            >
+                                            {/* {phn[addresses.indexOf(ele)].toNumber()} */}
+                                            </td>
+                                            
+                                            <button
+                                            style={{
+                                                backgroundColor: "#96D4D4",
+                                                border: "1px solid white",
+                                                borderCollapse: "collapse",
+                                                padding: "7px",
+                                                width: "200px",
+                                            }} 
+                                            onClick={()=>getPatientView(ele)}
+                                            >
+                                            view
+                                            </button>
+
+                                            
+                                            
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 );
-                            })}
-                        </div> */}
+                                }
+                            )
+                        }
+                        
 
 
 
