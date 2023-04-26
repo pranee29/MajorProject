@@ -28,15 +28,8 @@ function App() {
   const [account, setAccount] = useState("None");
   useEffect(() => {
     const connectWallet = async () => {
-      // const contractAddress = "0x3e4a3e6c3b446fD7a59c3dAdc2ba0db9a80Fec62";
-      //const contractAddress = "0x242f3C4A1DbeF6494860A03bD34cD241FA2c450a";//sepolia network medicalrecord1
-      //const contractAddress = "0x8Dd2eD33c188BC084977FA2aaf66e05693f22e66";//sepolia network medicalrecord1
-      //const contractAddress = "0xd2E5851Ede7DdBF121bd436178F19A81Fbb23f48";0xd79E8262b4b4Ffa7f0bfcc816396ED843655D8f4';0xF74823072b071A43666A52DC4C1886ae4eA35636
-      //const contractAddress="0x0Ff105E1A5b3791cDb4Ed1Df87E3f2374Fdf3f63";
-      //const contractAddress="0x15D95246c4bB8aC649a7C9ba43C36e53b3Fc6730"; phn number as uint256 
-      //const contractAddress="0x15D95246c4bB8aC649a7C9ba43C36e53b3Fc6730";
-      //const contractAddress="0xCe68d4492bC24A6cB7b00cE8145d6A54fF2EDA4c"
-      const contractAddress="0x444a5d3A238E8b1A3606C5084FB40BDfcCbE065C"
+      
+      const contractAddress="0x444a5d3A238E8b1A3606C5084FB40BDfcCbE065C";
       const contractABI = abi.abi;
       try {
         const { ethereum } = window;
@@ -101,3 +94,13 @@ function App() {
 }
 
 export default App;
+
+// const contractAddress = "0x3e4a3e6c3b446fD7a59c3dAdc2ba0db9a80Fec62";
+      //const contractAddress = "0x242f3C4A1DbeF6494860A03bD34cD241FA2c450a";//sepolia network medicalrecord1
+      //const contractAddress = "0x8Dd2eD33c188BC084977FA2aaf66e05693f22e66";//sepolia network medicalrecord1
+      //const contractAddress = "0xd2E5851Ede7DdBF121bd436178F19A81Fbb23f48";0xd79E8262b4b4Ffa7f0bfcc816396ED843655D8f4';0xF74823072b071A43666A52DC4C1886ae4eA35636
+      //const contractAddress="0x0Ff105E1A5b3791cDb4Ed1Df87E3f2374Fdf3f63";
+      //const contractAddress="0x15D95246c4bB8aC649a7C9ba43C36e53b3Fc6730"; phn number as uint256 
+      //const contractAddress="0x15D95246c4bB8aC649a7C9ba43C36e53b3Fc6730";
+      //const contractAddress="0xCe68d4492bC24A6cB7b00cE8145d6A54fF2EDA4c"
+       //(new address 0xB55Afd578ea1951Ea68Ea84a31f9f816DF867973)
