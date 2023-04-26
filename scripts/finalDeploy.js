@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const chai = await hre.ethers.getContractFactory("MedicalRecord2");
+  const chai = await hre.ethers.getContractFactory("FinalContract");
   const contract = await chai.deploy(); //instance of contract
 
   await contract.deployed();

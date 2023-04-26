@@ -20,9 +20,11 @@
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "@nomiclabs/hardhat-ethers": "^2.2.2",
+    "autoprefixer": "^10.4.14",
     "chai": "^4.3.7",
     "ethers": "^5.7.2",
     "hardhat": "^2.12.7",
-    "tailwindcss": "^3.2.7"
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.1"
   }
 }

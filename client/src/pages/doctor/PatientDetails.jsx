@@ -3,19 +3,22 @@ import { Link } from "react-router-dom";
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 
+import Display from "./Display";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Snackbar from '@mui/material/Snackbar';
+import SearchIcon from '@mui/icons-material/Search';
 
-const PatientDetails = ({ state }) => {
+import TextField from '@mui/material/TextField';
+const PatientDetails = ({ state,account }) => {
    
     
     const [transaction, setTransaction] = useState([]);
     const [addresses , setAddresses] = useState([]);
     const [phn , setPhn] = useState([]);
     const [data, setData]=useState([]);
-
+    const [topen, setTOpen] = useState("none");
     const [open, setOpen] = useState(false);
     const [opensb, setOpensb] = useState(false);
     const handleClose = () => {
@@ -71,6 +74,7 @@ const PatientDetails = ({ state }) => {
             setOpensb(false);
             setAddresses(addresses);
             setPhn(phn);
+            setTOpen("");   
             console.log(addresses+" "+phn);      
         }
         catch(error){
@@ -85,68 +89,66 @@ const PatientDetails = ({ state }) => {
         <>
 
             
-            <div className="w-full h-screen"  style={ { textAlign:"center", backgroundColor: "azure"} }>
+            <div className="w-full h-screen" style={ { textAlign:"center", backgroundColor: "lightblue"} }>
                 <aside>
                     <Navbar/>
                 </aside>   
                 <main className="flex-1 ml-44">
-                        <div>
+                        <div className="text-4xl">
                             Patient Details
                         </div>
                         <div className="flex  justify-evenly" style={ { textAlign:"center" ,marginTop:"70px"} }>
-                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatient} style={{backgroundColor: "lightblue", width:"30%"}} >
-                                <h1><b>Patient Details</b> </h1><br></br>
-                                <hr />
+                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatient} style={{backgroundColor: "white", width:"30%"}} >
                                 <br />
                                 <div className="mb-3">
-                                    <label className="form-label">Get Patient Details by address  </label>
-                                    <input
-                                        type="text"
-                                        className="form-control placeholder:italic outline outline-offset-2 outline-1"
-                                        id="address1"
-                                        placeholder="Enter Address"
-                                    />
+                                    <TextField
+                                    id="address1"
+                                    label="Enter Address"
+                                    type="text"
+                                    size="small"
+                                    fullWidth
+                                />
+                                
                                 </div><br></br>
                                 <button
                                     type="submit"
                                     className="h-10 px-6 rounded-full bg-violet-600 text-white" 
                                     disabled={!state.contract}
                                 >
-                                    Get Patient Details
+                                  <SearchIcon/> Search
                                 </button>
                                 <Dialog onClose={handleClose} open={open} >
                                     <DialogTitle>Patient Details</DialogTitle>
-                                        <div style={{ margin:"10px"}}>
-                                        <div style={{color:"black"}}>Address :  {transaction.at(1)} </div>
-                                        <div> Name:  {transaction.at(3)}</div>
-                                        {/* <div>Phone Number : {transaction.at(2).toNumber()}</div> */}
-                                        <div> Records : {transaction.at(4)}</div>
-                                        <div>Files :{transaction.at(5)}</div>
+                                        <div style={{ margin:"20px"}}>
+                                        <div style={{color:"black"}}>Address :  {transaction.at(1)} </div> <br/>
+                                        <div> Name:  {transaction.at(3)}</div> <br/>
+                                        <div>Phone Number : {transaction.at(2)}</div> <br/>
+                                        <div> Prescription : {transaction.at(4)}</div> <br/>
+                                        <div><Display state={state} account={transaction.at(1)}/></div>
                                         </div>
                                 </Dialog>
                                
                             </form>
 
-                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatientByName} style={{backgroundColor: "lightblue", width:"30%"}} >
-                                <h1><b>Patient Details</b> </h1><br></br>
-                                <hr></hr>
+                            <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" onSubmit={getPatientByName} style={{backgroundColor: "white", width:"30%"}} >
                                 
-                                <br />
                                 <div className="mb-3">
-                                    <label className="form-label">Get Patient Details by Name </label>
-                                    <input
-                                        type="text"
-                                        className="form-control placeholder:italic outline outline-offset-2 outline-1"
+                                    <br/>
+                                    <TextField
                                         id="name"
-                                        placeholder="Enter Name"
+                                        label="Enter Name"
+                                        type="text"
+                                        size="small"
+                                        fullWidth
                                     />
+                                    
                                 </div><br></br>
                                 <button
                                     type="submit"
                                     className="h-10 px-6 rounded-full bg-violet-600 text-white" 
                                     disabled={!state.contract}
                                 >
-                                    Get Details
+                                <SearchIcon/>    Get Details
                                 </button>
                                 <Snackbar
                                 open={opensb}
@@ -161,42 +163,84 @@ const PatientDetails = ({ state }) => {
                         <br></br>
                         <br></br>
 
-                        
-
-                        {
-                            addresses.map((ele)=>{
-                                return(
-                                <div style={{ marginLeft:"50px" , width:"100%"}}>
-                                    <table>
-                                    <tbody>
-                                        <tr>
-                                        <td
+                        <div style={{display:`${topen}`, marginLeft:"80px" , width:"100%"}}>
+                            <table>
+                            <tbody>
+                                <tr>
+                                <td
                                             
                                             style={{
-                                            backgroundColor: "#96D4D4",
                                             border: "1px solid white",
                                             borderCollapse: "collapse",
                                             padding: "7px",
-                                            width: "400px",           
+                                            width: "500px",           
                                             }}
                                             >
-                                            {ele}
+                                            Address
                                             </td>
                                             <td
                                             style={{
-                                                backgroundColor: "#96D4D4",
                                                 border: "1px solid white",
                                                 borderCollapse: "collapse",
                                                 padding: "7px",
                                                 width: "200px",
                                             }}
                                             >
-                                            {/* {phn[addresses.indexOf(ele)].toNumber()} */}
+                                            Phone Number
+                                            </td>
+                                            
+                                        
+                                            
+                                            <td
+                                            style={{
+                                                border: "1px solid white",
+                                                borderCollapse: "collapse",
+                                                padding: "7px",
+                                                width: "200px",
+                                            }} 
+                                            
+                                            >
+                                            Click For Details
+                                            </td>
+                                </tr>
+                            </tbody>
+                            </table>
+
+                        </div>
+              
+                        
+
+                        {
+                            addresses.map((ele)=>{
+                                return(
+                                <div style={{ marginLeft:"80px" , width:"100%"}}>
+                                    <table>
+                                    <tbody>
+                                        <tr>
+                                        <td
+                                            
+                                            style={{
+                                            border: "1px solid white",
+                                            borderCollapse: "collapse",
+                                            padding: "7px",
+                                            width: "500px",           
+                                            }}
+                                            >
+                                            {ele}
+                                            </td>
+                                            <td
+                                            style={{
+                                                border: "1px solid white",
+                                                borderCollapse: "collapse",
+                                                padding: "7px",
+                                                width: "200px",
+                                            }}
+                                            >
+                                            {phn[addresses.indexOf(ele)]}
                                             </td>
                                             
                                             <button
                                             style={{
-                                                backgroundColor: "#96D4D4",
                                                 border: "1px solid white",
                                                 borderCollapse: "collapse",
                                                 padding: "7px",

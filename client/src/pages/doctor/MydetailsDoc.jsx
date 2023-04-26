@@ -30,22 +30,22 @@ const MyDetailsDoc = ({ state,account }) => {
         <>
 
             
-            <div className="flex w-full h-screen" style={ { textAlign:"center", backgroundColor: "azure"} }>
+            <div className="flex h-screen" style={ { textAlign:"center", backgroundColor: "lightblue"} }>
                 <aside>
                     <Navbar/>
                 </aside>   
                 
                 <main>
-       <p className="text-4xl">Hello..   {account}</p>
-        <div className="w-screen flex justify-evenly " style={ { textAlign:"center" ,marginTop:"90px"} }>
-        <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800" style={{backgroundColor: "white"}} >
+       
+                <div className="w-screen flex justify-evenly flex-col" style={ { marginLeft:"300px",width:"80%",textAlign:"center" ,marginTop:"90px"} }>
+                <form className="shadow-2xl bg-slate-100 rounded-xl p-8 dark:bg-slate-800"  style={{backgroundColor: "white",marginTop:"90px"}} >
             <div><b>Your Details...</b></div><br></br>
             <hr></hr>
             <div className="mb-3">
               
-              <p style={{textAlign:"start", marginTop:"10px"}}><b>Name</b>           :  {details[2]}</p>
+              <p style={{textAlign:"start", marginTop:"10px"}}><b>Name</b>           :  {details.at(2)}</p>
               <p style={{textAlign:"start", marginTop:"10px"}}><b>id </b>           :  {account[0]}</p>
-              {/* <p style={{textAlign:"start", marginTop:"10px"}}><b>Phone Number</b>   :  {details[3].toNumber()}</p> */}
+              <p style={{textAlign:"start", marginTop:"10px"}}><b>Phone Number</b>   :  {details[3]}</p>
               <p style={{textAlign:"start", marginTop:"10px"}}><b>Qualification</b>           :  {details[4]}</p>
               <p style={{textAlign:"start", marginTop:"10px"}}><b>Hospital</b>           :  {details[5]}</p>
               
